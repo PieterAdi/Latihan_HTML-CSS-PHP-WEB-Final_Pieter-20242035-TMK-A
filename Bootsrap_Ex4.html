@@ -1,0 +1,1668 @@
+<!DOCTYPE html>
+<html lang="id">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Pulung Garage</title>
+
+    <!-- Bootstrap CSS -->
+    <!-- <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet"> -->
+    <link href="Assets/bootstrap/bootstrap.min.css" rel="stylesheet">
+    <!-- CSS digabung dalam file HTML -->
+    <style>
+        html {
+            scroll-behavior: smooth;
+        }
+
+        body {
+            margin: 0;
+            font-family: Arial, sans-serif;
+        }
+
+
+
+        /* ===== GARAGE INSIGHTS ===== */
+
+        .insights-section {
+            background: #081b2b;
+            color: #fff;
+        }
+
+        .insights-label {
+            display: inline-block;
+            padding: 7px 16px;
+            border: 1px solid #4387bd;
+            border-radius: 30px;
+            color: #8dcaff;
+            font-size: 12px;
+            letter-spacing: 2px;
+        }
+
+        .insights-description,
+        .chart-subtitle {
+            color: #a9bdce;
+        }
+
+        .stat-card,
+        .chart-card {
+            background: #10324e;
+            border: 1px solid rgba(141, 202, 255, .18);
+            border-radius: 16px;
+            padding: 24px;
+            height: 100%;
+            transition: transform .3s ease, box-shadow .3s ease;
+        }
+
+        .stat-card:hover,
+        .chart-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 12px 30px rgba(0, 0, 0, .2);
+        }
+
+        .stat-icon {
+            font-size: 28px;
+        }
+
+        .stat-card p {
+            margin: 14px 0 5px;
+            color: #c2d7e8;
+        }
+
+        .stat-card h3 {
+            color: #8dcaff;
+            font-size: 32px;
+            font-weight: 700;
+        }
+
+        .stat-card small {
+            color: #a9bdce;
+        }
+
+        .chart-container {
+            position: relative;
+            width: 100%;
+            height: 320px;
+        }
+
+        .chart-btn {
+            border: 1px solid #5186ad;
+            border-radius: 8px;
+            padding: 8px 15px;
+            background: transparent;
+            color: white;
+            transition: .25s ease;
+        }
+
+        .chart-btn:hover {
+            background: #245a7e;
+            transform: translateY(-2px);
+        }
+
+        .chart-btn.active {
+            background: #3b8dc5;
+            border-color: #3b8dc5;
+        }
+
+        /* Animasi ketika elemen muncul */
+        .reveal {
+            opacity: 0;
+            transform: translateY(24px);
+            transition: opacity .7s ease, transform .7s ease;
+        }
+
+        .reveal.is-visible {
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+        /* Hormati pengaturan pengurangan animasi */
+        @media (prefers-reduced-motion: reduce) {
+
+            .reveal,
+            .stat-card,
+            .chart-card,
+            .chart-btn {
+                transition: none;
+            }
+
+            .reveal {
+                opacity: 1;
+                transform: none;
+            }
+        }
+
+        @media (max-width: 576px) {
+            .stat-card {
+                padding: 18px;
+            }
+
+            .chart-container {
+                height: 260px;
+            }
+
+            .chart-card {
+                padding: 16px;
+            }
+        }
+
+        /* ================= NAVBAR ================= */
+        .navbar {
+            background-image:
+                linear-gradient(rgba(5, 20, 35, 0.65),
+                    rgba(5, 20, 35, 0.65)),
+                url("Assets/download.png");
+
+            background-size: cover;
+            background-position: center;
+            background-repeat: no-repeat;
+
+            border-bottom: 1px solid #376edd;
+            min-height: 70px;
+        }
+
+        .logo {
+            width: 60px;
+            height: 60px;
+            border: 1px solid #333;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 10px;
+            font-weight: bold;
+            color: white;
+            background-color: rgb(24, 24, 25);
+            text-decoration: none;
+        }
+
+        .nav-link {
+            color: #ffffff !important;
+            font-size: 14px;
+            margin-left: 10px;
+        }
+
+        .nav-link:hover {
+            color: #a3cbf0 !important;
+        }
+
+        /* ================= HOME ================= */
+
+        .home-section {
+            position: relative;
+            overflow: hidden;
+            min-height: 400px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            text-align: center;
+            padding: 40px 0;
+        }
+
+        .home-video {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            object-position: center;
+            z-index: 0;
+        }
+
+        .home-overlay {
+            position: absolute;
+            inset: 0;
+            background: rgba(0, 0, 0, 0.45);
+            z-index: 1;
+            pointer-events: none;
+        }
+
+        .home-content {
+            position: relative;
+            z-index: 2;
+            color: white;
+        }
+
+        .home-content h1 {
+            font-size: 42px;
+            font-weight: bold;
+        }
+
+        .home-content p {
+            font-size: 17px;
+            margin-bottom: 25px;
+        }
+
+        /* ================= SECTION BUTTON ================= */
+        .section-button {
+            display: inline-block;
+            background-color: rgb(85, 94, 105);
+            color: #ffffff;
+            border: 1px solid #777;
+            border-radius: 7px;
+            padding: 8px 24px;
+            font-weight: 500;
+        }
+
+        /* ================= SERVICES ================= */
+        .services-section {
+            color: white;
+            background-color: #10324e;
+            padding: 40px 0 50px;
+        }
+
+        .service-card {
+            height: 100%;
+            padding: 20px;
+            background-color: transparent;
+            color: #ffffff;
+            text-align: center;
+        }
+
+        .service-photo {
+            display: block;
+            width: calc(100% - 20px);
+            margin: 0 auto 15px;
+            border-radius: 10px;
+        }
+
+        .service-icon {
+            width: 65px;
+            height: 65px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+
+            background-color: #10324e;
+            border: 2px solid #ffffff;
+            border-radius: 50%;
+
+            margin: 0 auto 15px;
+            font-size: 32px;
+            color: #ffffff;
+        }
+
+        .service-card h3 {
+            font-size: 22px;
+            font-weight: bold;
+        }
+
+        .service-card p {
+            font-size: 14px;
+            line-height: 1.5;
+        }
+
+        /* ===== ABOUT ===== */
+
+        .about-section {
+            color: white;
+            background-color: #10324e;
+            padding: 40px 0;
+        }
+
+        .about-section form {
+            max-width: 800px;
+            margin: auto;
+        }
+
+        .form-control {
+            border: 1px solid #9cabcf;
+            border-radius: 5px;
+        }
+
+        textarea.form-control {
+            resize: none;
+        }
+
+
+        .about-section .btn {
+            display: inline-block;
+            min-width: 180px;
+            padding: 14px 30px;
+            color: #ffffff;
+            background: linear-gradient(135deg, #1769a6, #123b59);
+            border: 1px solid #4a90c2;
+            border-radius: 50px;
+            font-size: 20px;
+            letter-spacing: 2px;
+            text-align: center;
+            text-decoration: none;
+            text-transform: uppercase;
+            box-sizing: border-box;
+        }
+
+        .about-section .btn:hover {
+            color: #ffffff;
+            background: linear-gradient(135deg, #2585c9, #16496d);
+            box-shadow: 0 0 15px rgba(74, 144, 194, 0.5);
+        }
+
+
+
+        .garage-photos {
+            display: flex;
+            justify-content: space-around;
+            align-items: center;
+            gap: 40px;
+            flex-wrap: wrap;
+        }
+
+        .garage-photos img {
+            width: 210px;
+            height: 210px;
+            border-radius: 50%;
+            object-fit: cover;
+        }
+
+        /* ================= PROGRESS ================= */
+
+        .progress {
+            height: 25px;
+            border-radius: 10px;
+        }
+
+        .progress-bar {
+            background-color: #0d445b;
+        }
+
+        /* ================= CONTACT ================= */
+        .contact-section {
+            color: white;
+            background-color: #10324e;
+            padding: 40px 0;
+        }
+
+        .contact-section form {
+            max-width: 800px;
+            margin: auto;
+        }
+
+        .form-control {
+            border: 1px solid #9cabcf;
+            border-radius: 5px;
+        }
+
+        textarea.form-control {
+            resize: none;
+        }
+
+        .contact-section .btn {
+            min-width: 80px;
+        }
+
+        /* ================= FOOTER ================= */
+        .footer {
+            background-image:
+                linear-gradient(rgba(0, 0, 0, 0.55),
+                    rgba(0, 0, 0, 0.55)),
+                url("Assets/download.png");
+
+            background-size: cover;
+            background-position: center;
+            background-repeat: no-repeat;
+
+        }
+
+        .footer p {
+            margin: 0;
+            font-size: 14px;
+            color: white;
+            text-shadow: 1px 1px 3px black;
+
+        }
+
+        /* ================= RESPONSIVE ================= */
+
+        @media (max-width: 768px) {
+            .garage-photos {
+                gap: 12px;
+                flex-wrap: nowrap;
+            }
+
+            .garage-photos img {
+                width: 110px;
+                height: 110px;
+                min-width: 0;
+                flex: 0 1 110px;
+            }
+        }
+
+
+        .garage-photos img:nth-child(2):hover {
+            transform: scale(1.13);
+        }
+
+        /* Pengaturan untuk mengurangi animasi */
+        @media (prefers-reduced-motion: reduce) {
+
+            .home-video,
+            .home-content h1,
+            .home-content p,
+            .home-content .btn,
+            .progress-bar {
+                animation: none !important;
+            }
+
+            .btn,
+            .nav-link,
+            .service-card,
+            .service-photo,
+            .service-icon,
+            .garage-photos img,
+            .form-control,
+            .thankyou-modal,
+            .thankyou-close {
+                transition: none !important;
+            }
+        }
+
+        /* ===== MICROINTERACTION PULUNG GARAGE ===== */
+
+        /* Transisi halus */
+        html {
+            scroll-behavior: smooth;
+            scroll-padding-top: 85px;
+        }
+
+        .btn,
+        .nav-link,
+        .service-icon,
+        .service-photo,
+        .garage-photos img {
+            transition: all 0.3s ease;
+        }
+
+        /* Tombol interaktif */
+        .btn {
+            position: relative;
+            overflow: hidden;
+            transition: transform 0.25s ease,
+                box-shadow 0.25s ease,
+                background-color 0.25s ease;
+        }
+
+        .btn:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 8px 20px rgba(0, 0, 0, 0.22);
+        }
+
+        .btn:active {
+            transform: scale(0.96);
+        }
+
+        /* Efek garis bawah navbar */
+        .nav-link {
+            position: relative;
+            display: inline-block;
+        }
+
+        .nav-link::after {
+            content: "";
+            position: absolute;
+            left: 10px;
+            right: 100%;
+            bottom: 3px;
+            height: 2px;
+            background: #60a5fa;
+            transition: right 0.3s ease;
+        }
+
+        .nav-link:hover::after,
+        .nav-link:focus-visible::after,
+        .nav-link.active::after {
+            right: 0;
+        }
+
+        /* Kartu layanan */
+        .service-card {
+            border-radius: 18px;
+            transition: transform 0.35s ease,
+                background-color 0.35s ease,
+                box-shadow 0.35s ease;
+        }
+
+        .service-card:hover {
+            transform: translateY(-8px);
+            background-color: rgba(255, 255, 255, 0.055);
+            box-shadow: 0 15px 35px rgba(0, 0, 0, 0.2);
+        }
+
+        .service-photo {
+            transition: transform 0.5s ease,
+                filter 0.5s ease;
+        }
+
+        .service-card:hover .service-photo {
+            transform: scale(1.035);
+            filter: brightness(1.08);
+        }
+
+        .service-icon {
+            transition: transform 0.35s ease,
+                background-color 0.35s ease;
+        }
+
+        .service-card:hover .service-icon {
+            transform: rotate(-8deg) scale(1.1);
+            background-color: #1d5b83;
+        }
+
+        /* Galeri foto */
+        .garage-photos img {
+            transition: transform 0.4s ease,
+                box-shadow 0.4s ease;
+        }
+
+        .garage-photos img:hover {
+            transform: scale(1.08) rotate(2deg);
+            box-shadow: 0 12px 28px rgba(16, 50, 78, 0.25);
+        }
+
+        /* Input formulir */
+        .form-control {
+            transition: border-color 0.25s ease,
+                box-shadow 0.25s ease,
+                transform 0.25s ease;
+        }
+
+        .form-control:focus {
+            border-color: #60a5fa;
+            box-shadow: 0 0 0 4px rgba(96, 165, 250, 0.2);
+            transform: translateY(-1px);
+        }
+
+        /* Animasi saat scroll */
+        .reveal {
+            opacity: 0;
+            transform: translateY(24px);
+            transition: opacity 0.7s ease,
+                transform 0.7s ease;
+        }
+
+        .reveal.is-visible {
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+        /* Animasi progress bar */
+        .progress-bar {
+            width: 0 !important;
+            transition: width 1.4s cubic-bezier(.22, 1, .36, 1);
+        }
+
+        /* Notifikasi formulir */
+        .micro-toast {
+            position: fixed;
+            right: 22px;
+            bottom: 22px;
+            z-index: 9999;
+            max-width: calc(100vw - 44px);
+            padding: 15px 20px;
+            color: #fff;
+            background: #10324e;
+            border-left: 4px solid #60a5fa;
+            border-radius: 10px;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.25);
+            opacity: 0;
+            transform: translateY(20px);
+            pointer-events: none;
+            transition: opacity 0.3s ease,
+                transform 0.3s ease;
+        }
+
+        .micro-toast.show {
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+        /* Tombol kembali ke atas */
+        .back-to-top {
+            position: fixed;
+            right: 22px;
+            bottom: 85px;
+            z-index: 1000;
+            width: 44px;
+            height: 44px;
+            border: 0;
+            border-radius: 50%;
+            color: white;
+            background: #1769aa;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
+            opacity: 0;
+            visibility: hidden;
+            transform: translateY(10px);
+            transition: all 0.3s ease;
+        }
+
+        .back-to-top.show {
+            opacity: 1;
+            visibility: visible;
+            transform: translateY(0);
+        }
+
+        .back-to-top:hover {
+            background: #0d445b;
+            transform: translateY(-4px);
+        }
+
+        /* Hormati pengaturan pengurangan animasi */
+        @media (prefers-reduced-motion: reduce) {
+
+            *,
+            *::before,
+            *::after {
+                scroll-behavior: auto !important;
+                animation-duration: 0.01ms !important;
+                animation-iteration-count: 1 !important;
+                transition-duration: 0.01ms !important;
+            }
+
+            .reveal {
+                opacity: 1;
+                transform: none;
+            }
+        }
+
+
+        /* ===== POP-UP TERIMA KASIH ===== */
+
+        .thankyou-overlay {
+            position: fixed;
+            inset: 0;
+            z-index: 10000;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            padding: 20px;
+
+            background: rgba(2, 12, 24, 0.75);
+            backdrop-filter: blur(7px);
+            -webkit-backdrop-filter: blur(7px);
+
+            opacity: 0;
+            visibility: hidden;
+            transition: opacity 0.35s ease,
+                visibility 0.35s ease;
+        }
+
+        .thankyou-overlay:target {
+            opacity: 1;
+            visibility: visible;
+            pointer-events: auto;
+        }
+
+        .thankyou-overlay:target .thankyou-modal {
+            transform: translateY(0) scale(1);
+        }
+
+        .thankyou-modal {
+            width: 100%;
+            max-width: 430px;
+            padding: 35px 28px;
+            text-align: center;
+            color: #ffffff;
+
+            background: linear-gradient(145deg, #10324e, #071827);
+            border: 1px solid rgba(96, 165, 250, 0.45);
+            border-radius: 22px;
+            box-shadow: 0 25px 80px rgba(0, 0, 0, 0.4);
+
+            transform: translateY(35px) scale(0.88);
+            transition: transform 0.4s cubic-bezier(.2, .8, .2, 1);
+        }
+
+        .thankyou-overlay:target .thankyou-modal {
+            transform: translateY(0) scale(1);
+        }
+
+        .thankyou-check {
+            width: 82px;
+            height: 82px;
+            margin: 0 auto 22px;
+
+            display: flex;
+            align-items: center;
+            justify-content: center;
+
+            background: #176b50;
+            border: 3px solid #4ade80;
+            border-radius: 50%;
+
+            font-size: 42px;
+            color: #ffffff;
+
+            animation: thankyou-pop 0.6s 0.15s both;
+        }
+
+        .thankyou-modal h2 {
+            margin-bottom: 12px;
+            font-size: 29px;
+            font-weight: 800;
+        }
+
+        .thankyou-modal p {
+            color: #d6e3ef;
+            line-height: 1.7;
+            font-size: 15px;
+        }
+
+        .thankyou-modal .customer-name {
+            color: #93c5fd;
+            font-weight: 700;
+        }
+
+        .thankyou-modal .thankyou-tagline {
+            margin-top: 20px;
+            color: #93c5fd;
+            font-weight: 700;
+        }
+
+        .thankyou-close {
+            width: 100%;
+            margin-top: 12px;
+            padding: 12px 20px;
+
+            border: none;
+            border-radius: 10px;
+            background: #2563eb;
+            color: white;
+            font-weight: 700;
+
+            transition: background 0.25s ease,
+                transform 0.25s ease;
+        }
+
+        .thankyou-close:hover {
+            background: #3b82f6;
+            transform: translateY(-2px);
+        }
+
+        @keyframes thankyou-pop {
+            0% {
+                opacity: 0;
+                transform: scale(0.3) rotate(-20deg);
+            }
+
+            70% {
+                opacity: 1;
+                transform: scale(1.15) rotate(5deg);
+            }
+
+            100% {
+                transform: scale(1) rotate(0);
+            }
+        }
+
+        @media (prefers-reduced-motion: reduce) {
+
+            .thankyou-overlay,
+            .thankyou-modal,
+            .thankyou-check,
+            .thankyou-close {
+                animation: none !important;
+                transition: none !important;
+            }
+        }
+
+        :root {
+            --garage-blue: #60a5fa;
+            --garage-dark: #071827;
+            --garage-navy: #10324e;
+            --garage-glow: rgba(96, 165, 250, 0.35);
+        }
+
+        .navbar {
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.2);
+            transition: background-color 0.3s ease,
+                box-shadow 0.3s ease;
+        }
+
+        .navbar-brand.logo {
+            border: 2px solid var(--garage-blue);
+            box-shadow: 0 0 0 rgba(96, 165, 250, 0);
+            transition: transform 0.3s ease,
+                box-shadow 0.3s ease;
+        }
+
+        .navbar-brand.logo:hover {
+            transform: rotate(-8deg) scale(1.08);
+            box-shadow: 0 0 20px var(--garage-glow);
+        }
+
+        .nav-link {
+            padding-bottom: 8px;
+        }
+
+        .home-section {
+            min-height: 540px;
+            background-color: var(--garage-dark);
+        }
+
+        .home-video {
+            animation: videoReveal 1.5s ease both;
+        }
+
+        .home-content h1 {
+            font-size: clamp(36px, 6vw, 64px);
+            letter-spacing: 1px;
+            text-shadow: 0 5px 25px rgba(0, 0, 0, 0.55);
+            animation: titleReveal 0.9s ease both;
+        }
+
+        .home-content p {
+            max-width: 850px;
+            margin-left: auto;
+            margin-right: auto;
+            line-height: 1.8;
+            animation: titleReveal 1s 0.2s ease both;
+        }
+
+        .home-content .btn {
+            padding: 12px 30px;
+            border: 1px solid #93c5fd;
+            border-radius: 10px;
+            background: linear-gradient(135deg, #2563eb, #10324e);
+            box-shadow: 0 5px 20px rgba(37, 99, 235, 0.25);
+            animation: titleReveal 1s 0.35s ease both;
+        }
+
+        .home-content .btn:hover {
+            background: linear-gradient(135deg, #60a5fa, #2563eb);
+            box-shadow: 0 0 28px var(--garage-glow);
+        }
+
+        .section-button {
+            display: inline-block;
+            padding: 10px 25px;
+            color: #fff;
+            background: linear-gradient(135deg, #1769aa, #10324e);
+            border: 1px solid rgba(147, 197, 253, 0.6);
+            border-radius: 30px;
+            font-size: 10px;
+            font-weight: 600;
+            letter-spacing: 1px;
+            text-align: center;
+            line-height: 1.2;
+            box-shadow: 0 4px 18px rgba(0, 0, 0, 0.15);
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+        }
+
+        .section-button:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 8px 24px var(--garage-glow);
+        }
+
+        .service-card {
+            position: relative;
+            overflow: hidden;
+            border: 1px solid rgba(147, 197, 253, 0.12);
+            background: linear-gradient(145deg,
+                    rgba(255, 255, 255, 0.035),
+                    rgba(0, 0, 0, 0.08));
+        }
+
+        .service-card::before {
+            content: "";
+            position: absolute;
+            top: 0;
+            left: -120%;
+            width: 70%;
+            height: 100%;
+            pointer-events: none;
+            background: linear-gradient(110deg,
+                    transparent,
+                    rgba(255, 255, 255, 0.08),
+                    transparent);
+            transition: left 0.65s ease;
+        }
+
+        .service-card:hover::before {
+            left: 140%;
+        }
+
+        .service-card:hover {
+            border-color: rgba(96, 165, 250, 0.65);
+            box-shadow: 0 15px 35px rgba(0, 0, 0, 0.25),
+                0 0 20px rgba(96, 165, 250, 0.1);
+        }
+
+        .service-photo {
+            aspect-ratio: 4 / 3;
+            object-fit: cover;
+            box-shadow: 0 5px 18px rgba(0, 0, 0, 0.2);
+        }
+
+        .service-icon {
+            box-shadow: 0 0 0 rgba(96, 165, 250, 0);
+        }
+
+        .service-card:hover .service-icon {
+            border-color: var(--garage-blue);
+            box-shadow: 0 0 22px var(--garage-glow);
+        }
+
+        .about-section {
+            position: relative;
+            overflow: hidden;
+            background: linear-gradient(180deg, #fff, #f1f6fc);
+        }
+
+        .about-section h2 {
+            font-size: clamp(28px, 4vw, 38px);
+            letter-spacing: 2px;
+            margin-bottom: 22px;
+        }
+
+        .about-intro {
+            max-width: 850px;
+            margin: 0 auto 16px;
+            color: #475569;
+            line-height: 1.9 !important;
+        }
+
+        .about-section .fw-bold {
+            color: #1769aa;
+        }
+
+        .garage-photos {
+            gap: clamp(20px, 4vw, 55px);
+            padding: 20px 0;
+        }
+
+        .garage-photos img {
+            border: 4px solid #fff;
+            box-shadow: 0 8px 25px rgba(16, 50, 78, 0.16);
+        }
+
+        .garage-photos img:hover {
+            position: relative;
+            z-index: 2;
+            transform: scale(1.1) rotate(2deg);
+            box-shadow: 0 15px 35px var(--garage-glow);
+        }
+
+        .progress {
+            overflow: hidden;
+            background-color: #dce7f3;
+            border: 1px solid #d1dfed;
+            box-shadow: inset 0 2px 4px rgba(0, 0, 0, 0.06);
+        }
+
+        .progress-bar {
+            width: auto;
+            transition: width 1.4s cubic-bezier(.22, 1, .36, 1);
+        }
+
+        .contact-section {
+            background:
+                radial-gradient(circle at top right,
+                    rgba(37, 99, 235, 0.16),
+                    transparent 45%),
+                #10324e;
+        }
+
+        .contact-section .form-control {
+            padding: 12px 15px;
+            background-color: #fff;
+        }
+
+        .contact-section .form-control:focus {
+            border-color: #60a5fa;
+            box-shadow: 0 0 0 4px rgba(96, 165, 250, 0.2),
+                0 5px 18px rgba(0, 0, 0, 0.1);
+        }
+
+        .contact-section .btn {
+            padding: 11px 28px;
+            border-radius: 9px;
+        }
+
+        .footer {
+            padding: 22px 15px;
+            text-align: center;
+            border-top: 1px solid rgba(96, 165, 250, 0.4);
+            background-position: center 60%;
+        }
+
+        .thankyou-modal {
+            position: relative;
+            overflow: hidden;
+        }
+
+        .thankyou-modal::before {
+            content: "";
+            position: absolute;
+            top: -90px;
+            left: 50%;
+            width: 200px;
+            height: 200px;
+            border-radius: 50%;
+            background: rgba(96, 165, 250, 0.1);
+            transform: translateX(-50%);
+            pointer-events: none;
+        }
+
+        .thankyou-check {
+            box-shadow: 0 0 30px rgba(74, 222, 128, 0.15);
+        }
+
+        .thankyou-close {
+            box-shadow: 0 5px 18px rgba(37, 99, 235, 0.25);
+        }
+
+        .thankyou-close:active {
+            transform: scale(0.97);
+        }
+
+        @keyframes titleReveal {
+            from {
+                opacity: 0;
+                transform: translateY(22px);
+            }
+
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        @keyframes videoReveal {
+            from {
+                opacity: 0.4;
+                transform: scale(1.04);
+            }
+
+            to {
+                opacity: 1;
+                transform: scale(1);
+            }
+        }
+
+        @keyframes progressShimmer {
+            from {
+                background-position: 200% 0;
+            }
+
+            to {
+                background-position: -200% 0;
+            }
+        }
+
+        @media (max-width: 768px) {
+            .home-section {
+                min-height: 450px;
+                padding: 55px 18px;
+            }
+
+            .home-content h1 {
+                font-size: 36px;
+            }
+
+            .home-content p {
+                font-size: 15px;
+            }
+
+            .service-card {
+                padding: 16px;
+            }
+
+            .garage-photos {
+                gap: 12px;
+                justify-content: center;
+            }
+
+            .garage-photos img {
+                width: 28vw;
+                height: 28vw;
+                max-width: 125px;
+                max-height: 125px;
+                flex: 0 1 28vw;
+            }
+        }
+
+        .garage-photos img:nth-child(2) {
+            transform: scale(1);
+        }
+
+        .garage-photos img:nth-child(2):hover {
+            transform: scale(1.13);
+        }
+
+
+        @media (prefers-reduced-motion: reduce) {
+
+            .home-video,
+            .home-content h1,
+            .home-content p,
+            .home-content .btn,
+            .progress-bar {
+                animation: none !important;
+            }
+
+            .btn,
+            .nav-link,
+            .service-card,
+            .service-photo,
+            .service-icon,
+            .garage-photos img,
+            .form-control,
+            .thankyou-modal,
+            .thankyou-close {
+                transition: none !important;
+            }
+        }
+    </style>
+
+</head>
+
+<body>
+
+    <!-- ================= NAVBAR ================= -->
+    <nav class="navbar navbar-expand-lg navbar-dark sticky-top">
+        <div class="container">
+
+            <!-- Logo -->
+            <a class="navbar-brand logo" href="#home">
+                PULUNG
+            </a>
+
+            <!-- Tombol Responsive -->
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarMenu"
+                aria-controls="navbarMenu" aria-expanded="false" aria-label="Buka navigasi">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+
+            <!-- Menu -->
+            <div class="collapse navbar-collapse" id="navbarMenu">
+                <ul class="navbar-nav ms-auto">
+                    <li class="nav-item">
+                        <a class="nav-link" href="#home">Home</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="#services">Services</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="#about">About</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="#contact">Contact</a>
+                    </li>
+                </ul>
+            </div>
+
+        </div>
+    </nav>
+
+    <!-- ================= HOME ================= -->
+    <section id="home" class="home-section">
+
+        <video class="home-video" autoplay muted loop playsinline>
+            <source src="Assets/8986876-uhd_3840_2160_30fps.mp4" type="video/mp4">
+        </video>
+
+        <div class="home-overlay"></div>
+
+        <div class="container text-center home-content">
+            <h1>Pulung Garage</h1>
+
+            <p>
+                Kami hadir untuk menjaga kendaraan Anda tetap prima melalui layanan perawatan dan perbaikan berkualitas,
+                ditangani oleh teknisi berpengalaman dengan pelayanan profesional dan terpercaya.
+            </p>
+
+            <a href="#services" class="btn btn-primary">
+                Lihat Layanan
+            </a>
+        </div>
+
+    </section>
+
+    <!-- ================= SERVICES ================= -->
+    <section id="services" class="services-section">
+        <div class="container">
+
+            <div class="text-center mb-4">
+                <span class="section-button">SERVICES</span>
+            </div>
+
+            <div class="row g-4">
+
+                <!-- Service 1 -->
+                <div class="col-md-4">
+                    <div class="service-card">
+                        <div class="service-icon">🔧</div>
+                        <h3>Service Rutin</h3>
+
+                        <img class="service-photo"
+                            src="https://i.ibb.co.com/0yybKFhg/Whats-App-Image-2026-10-02-at-10-12-04.jpg"
+                            alt="Service Rutin">
+
+                        <p>
+                            Pemeriksaan rutin meliputi pengecekan oli mesin, rem, ban, aki,
+                            dan komponen kendaraan lainnya untuk menjaga keamanan serta performa kendaraan tetap
+                            optimal.
+                        </p>
+                    </div>
+                </div>
+
+                <!-- Service 2 -->
+                <div class="col-md-4">
+                    <div class="service-card">
+                        <div class="service-icon">⚙️</div>
+                        <h3>Perbaikan Mesin</h3>
+
+                        <img class="service-photo"
+                            src="https://i.ibb.co.com/CpVjL7Lq/Whats-App-Image-2026-10-02-at-10-12-04-1.jpg"
+                            alt="Perbaikan Mesin">
+
+                        <p>
+                            Menangani berbagai kerusakan mesin, mulai dari mesin sulit dihidupkan,
+                            suara tidak normal, hingga perbaikan komponen mesin agar kendaraan kembali bekerja dengan
+                            baik.
+                        </p>
+                    </div>
+                </div>
+
+                <!-- Service 3 -->
+                <div class="col-md-4">
+                    <div class="service-card">
+                        <div class="service-icon">⚡</div>
+                        <h3>Kelistrikan AC &amp; DC</h3>
+
+                        <img class="service-photo"
+                            src="https://i.ibb.co/w3kzcSB/Whats-App-Image-2026-10-20-at-14-29-47.jpg"
+                            alt="Kelistrikan AC DC">
+
+                        <p>
+                            Pemeriksaan dan perbaikan sistem kelistrikan kendaraan, termasuk aki, kabel, sekring, lampu,
+                            starter,
+                            dan sistem pengisian untuk memastikan semua komponen listrik berfungsi dengan baik.
+                        </p>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+    </section>
+
+    <!-- ================= ABOUT ================= -->
+    <section id="about" class="about-section">
+        <div class="container">
+
+
+            <div class="text-center mb-4">
+                <span class="section-button">ABOUT</span>
+            </div>
+
+            <p class="about-intro">
+                Pulung Garage adalah bengkel otomotif yang berkomitmen
+                memberikan pelayanan profesional dalam perawatan dan
+                perbaikan kendaraan.
+            </p>
+
+            <p class="about-intro">
+                Kami menyediakan layanan servis rutin, perbaikan mesin,
+                serta perawatan sistem kelistrikan AC dan DC dengan
+                mengutamakan ketelitian, kualitas pengerjaan, dan
+                kepuasan pelanggan.
+            </p>
+
+        </div>
+
+        <!-- Galeri Foto Garage -->
+        <div class="garage-photos">
+            <img src="https://i.ibb.co.com/tPQtSq6X/e70da5df-b313-4a62-8e9a-472ad6a6214c.png" alt="Garage 1">
+
+            <img src="https://i.ibb.co.com/XZmZY1W3/70f1f4f7-e256-437d-b856-1d06f5f180ef.png" alt="Garage 2">
+
+            <img src="https://i.ibb.co.com/DfNgYSwR/foto-lingkaran-transparan-2.png" alt="Garage 3">
+        </div>
+
+        <!-- Indikator Progress -->
+        <div class="row justify-content-center mt-4">
+            <div class="col-md-8">
+
+                <p class="mb-1 fw-bold">
+                    Kepuasan Pelanggan (95%)
+                </p>
+
+                <div class="progress mb-3">
+                    <div class="progress-bar" role="progressbar" style="width: 95%;" aria-valuenow="95"
+                        aria-valuemin="0" aria-valuemax="100">
+                        95%
+                    </div>
+                </div>
+
+                <p class="mb-1 fw-bold">
+                    Pekerjaan Selesai Tepat Waktu (90%)
+                </p>
+
+                <div class="progress">
+                    <div class="progress-bar" role="progressbar" style="width: 90%;" aria-valuenow="90"
+                        aria-valuemin="0" aria-valuemax="100">
+                        90%
+                    </div>
+                </div>
+
+            </div>
+        </div>
+
+        </div>
+    </section>
+
+    <!-- ================= GARAGE INSIGHTS ================= -->
+
+    <section id="insights" class="insights-section py-5">
+        <div class="container">
+            <div class="text-center mb-5 reveal">
+                <span class="insights-label">GARAGE INSIGHTS</span>
+                <h2 class="fw-bold mt-3">Statistik Pulung Garage</h2>
+                <p class="insights-description">Gambaran aktivitas dan pelayanan bengkel kami.</p>
+            </div>
+
+            <!-- KARTU STATISTIK -->
+            <div class="row g-3 mb-4">
+                <div class="col-md-4">
+                    <div class="stat-card reveal">
+                        <span class="stat-icon">🚗</span>
+                        <p>Kendaraan Masuk</p>
+                        <h3><span class="counter" data-target="248">0</span></h3>
+                        <small>Unit · Data contoh</small>
+                    </div>
+                </div>
+                <div class="col-md-4">
+                    <div class="stat-card reveal">
+                        <span class="stat-icon">🔧</span>
+                        <p>Jenis Layanan</p>
+                        <h3><span class="counter" data-target="3">0</span></h3>
+                        <small>Layanan utama</small>
+                    </div>
+                </div>
+                <div class="col-md-4">
+                    <div class="stat-card reveal">
+                        <span class="stat-icon">⭐</span>
+                        <p>Kepuasan Pelanggan</p>
+                        <h3><span class="counter" data-target="96">0</span>%</h3>
+                        <small>Simulasi, bukan hasil survei</small>
+                    </div>
+                </div>
+            </div>
+
+            <!-- GRAFIK INTERAKTIF -->
+            <div class="chart-card reveal">
+                <div class="d-flex justify-content-between align-items-center flex-wrap gap-3 mb-4">
+                    <div>
+                        <h4 class="fw-bold mb-1">Kendaraan Masuk</h4>
+                        <p class="mb-0 chart-subtitle">Statistik bulanan · Data simulasi</p>
+                    </div>
+                    <div class="chart-controls">
+                        <button class="chart-btn active" data-chart="bar">Batang</button>
+                        <button class="chart-btn" data-chart="line">Garis</button>
+                    </div>
+                </div>
+                <div class="chart-container">
+                    <canvas id="garageChart"></canvas>
+                </div>
+            </div>
+        </div>
+    </section>
+    <!-- ================= CONTACT ================= -->
+    <section id="contact" class="contact-section">
+        <div class="container">
+
+            <div class="text-center mb-4">
+                <span class="section-button">CONTACT</span>
+            </div>
+
+            <form id="contactForm" autocomplete="off">
+                <div class="row g-3">
+
+                    <div class="col-md-6">
+                        <label for="nama" class="form-label">
+                            Nama Lengkap
+                        </label>
+
+                        <input type="text" class="form-control" id="nama" name="nama" placeholder="Masukkan Nama Anda"
+                            autocomplete="off" required>
+                    </div>
+
+                    <div class="col-md-6">
+                        <label for="email" class="form-label">
+                            Email / WhatsApp
+                        </label>
+
+                        <input type="text" class="form-control" id="email" name="email"
+                            placeholder="Masukkan email atau no. WhatsApp Anda" autocomplete="off" required>
+                    </div>
+
+                    <div class="col-12">
+                        <label for="pesan" class="form-label">
+                            Kritik dan Saran
+                        </label>
+
+                        <textarea class="form-control" id="pesan" name="pesan" rows="4"
+                            placeholder="Tuliskan masukan Anda di sini..." autocomplete="off" required></textarea>
+                    </div>
+
+                    <div class="col-12 text-center mt-3">
+                        <a href="#terimakasih" class="btn btn-primary px-4">
+                            Kirim Pesan
+                        </a>
+                    </div>
+
+                </div>
+            </form>
+
+            <!-- POP-UP TERIMA KASIH -->
+            <div id="terimakasih" class="thankyou-overlay">
+                <div class="thankyou-modal">
+                    <div class="thankyou-check">✓</div>
+
+                    <h2>Terima Kasih!</h2>
+
+                    <p>
+                        Terima kasih atas masukan, kritik, dan saran
+                        yang telah Anda berikan kepada Pulung Garage.
+                        Masukan Anda sangat berarti bagi kami untuk
+                        terus meningkatkan kualitas pelayanan.
+                    </p>
+
+                    <p class="thankyou-tagline">
+                        Pulung Garage — Perawatan Berkualitas,
+                        Perjalanan Lebih Aman.
+                    </p>
+
+                    <button type="button" class="thankyou-close" id="btnSelesai">
+                        Selesai
+                    </button>
+                </div>
+            </div>
+
+        </div>
+    </section>
+
+    <!-- FOOTER -->
+    <footer class="footer">
+        <p>&copy; 2026 Pulung Garage. All Rights Reserved.</p>
+    </footer>
+    <!-- Library grafik -->
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <!-- Bootstrap JS Bundle lokal -->
+    <script src="Assets/bootstrap/bootstrap.bundle.min.js"></script>
+
+    <script>
+        document.addEventListener("DOMContentLoaded", function () {
+
+            // 1. ANIMASI ANGKA STATISTIK
+            const counters = document.querySelectorAll(".counter");
+
+            const animateCounter = function (counter) {
+                const target = Number(counter.dataset.target);
+                const duration = 1200;
+                const startTime = performance.now();
+
+                function updateCounter(now) {
+                    const progress = Math.min((now - startTime) / duration, 1);
+                    const eased = 1 - Math.pow(1 - progress, 3);
+
+                    counter.textContent = Math.floor(target * eased);
+
+                    if (progress < 1) {
+                        requestAnimationFrame(updateCounter);
+                    }
+                }
+
+                requestAnimationFrame(updateCounter);
+            };
+
+            // 2. ANIMASI ELEMEN SAAT DI-SCROLL
+            const revealElements = document.querySelectorAll(".reveal");
+            const animatedCounters = new WeakSet();
+
+            if ("IntersectionObserver" in window) {
+                const observer = new IntersectionObserver(function (entries) {
+                    entries.forEach(function (entry) {
+                        if (entry.isIntersecting) {
+                            entry.target.classList.add("is-visible");
+
+                            const counter = entry.target.querySelector(".counter");
+
+                            if (counter && !animatedCounters.has(counter)) {
+                                animatedCounters.add(counter);
+                                animateCounter(counter);
+                            }
+
+                            observer.unobserve(entry.target);
+                        }
+                    });
+                }, { threshold: 0.15 });
+
+                revealElements.forEach(function (element) {
+                    observer.observe(element);
+                });
+            } else {
+                revealElements.forEach(function (element) {
+                    element.classList.add("is-visible");
+                });
+
+                counters.forEach(animateCounter);
+            }
+
+            // 3. MEMBUAT GRAFIK KENDARAAN MASUK
+            const canvas = document.getElementById("garageChart");
+
+            if (canvas && typeof Chart !== "undefined") {
+                const labels = [
+                    "Jan", "Feb", "Mar", "Apr", "Mei", "Jun",
+                    "Jul", "Agu", "Sep", "Okt", "Nov", "Des"
+                ];
+
+                // Angka ini hanya data simulasi
+                const vehicleData = [
+                    18, 24, 21, 30, 27, 35,
+                    32, 40, 36, 45, 42, 50
+                ];
+
+                const garageChart = new Chart(canvas, {
+                    type: "bar",
+
+                    data: {
+                        labels: labels,
+                        datasets: [{
+                            label: "Kendaraan Masuk",
+                            data: vehicleData,
+                            backgroundColor: "rgba(75, 166, 224, 0.7)",
+                            borderColor: "#78c7ff",
+                            borderWidth: 2,
+                            borderRadius: 6,
+                            tension: 0.35,
+                            fill: true
+                        }]
+                    },
+
+                    options: {
+                        responsive: true,
+                        maintainAspectRatio: false,
+
+                        animation: {
+                            duration: 1200,
+                            easing: "easeOutQuart"
+                        },
+
+                        interaction: {
+                            intersect: false,
+                            mode: "index"
+                        },
+
+                        plugins: {
+                            legend: {
+                                labels: {
+                                    color: "#ffffff"
+                                }
+                            },
+
+                            tooltip: {
+                                callbacks: {
+                                    label: function (context) {
+                                        return context.dataset.label + ": "
+                                            + context.parsed.y + " unit";
+                                    }
+                                }
+                            }
+                        },
+
+                        scales: {
+                            x: {
+                                ticks: { color: "#c2d7e8" },
+                                grid: { display: false }
+                            },
+
+                            y: {
+                                beginAtZero: true,
+                                ticks: { color: "#c2d7e8" },
+                                grid: {
+                                    color: "rgba(255, 255, 255, 0.1)"
+                                }
+                            }
+                        }
+                    }
+                });
+
+                // 4. TOMBOL GANTI GRAFIK BATANG / GARIS
+                const chartButtons = document.querySelectorAll(".chart-btn");
+
+                chartButtons.forEach(function (button) {
+                    button.addEventListener("click", function () {
+                        const selectedType = button.dataset.chart;
+
+                        garageChart.config.type = selectedType;
+
+                        garageChart.data.datasets[0].backgroundColor =
+                            selectedType === "bar"
+                                ? "rgba(75, 166, 224, 0.7)"
+                                : "rgba(75, 166, 224, 0.15)";
+
+                        garageChart.data.datasets[0].fill =
+                            selectedType === "line";
+
+                        garageChart.update();
+
+                        chartButtons.forEach(function (item) {
+                            item.classList.remove("active");
+                        });
+
+                        button.classList.add("active");
+                    });
+                });
+            }
+        });
+
+        document.getElementById("btnSelesai").addEventListener("click", function () {
+            document.getElementById("contactForm").reset();
+            window.location.href = window.location.pathname;
+        });
+    </script>
+</body>
+
+</html>
