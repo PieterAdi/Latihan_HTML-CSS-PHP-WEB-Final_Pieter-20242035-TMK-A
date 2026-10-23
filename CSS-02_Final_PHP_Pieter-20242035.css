@@ -1,0 +1,352 @@
+/* ================= CONTACT ================= */
+
+.contact-section {
+    color: white;
+    background-color: #10324e;
+    padding: 40px 0;
+}
+
+.contact-section form {
+    max-width: 800px;
+    margin: auto;
+}
+
+.form-control {
+    border: 1px solid #9cabcf;
+    border-radius: 5px;
+}
+
+textarea.form-control {
+    resize: none;
+}
+
+.contact-section .btn {
+    min-width: 80px;
+}
+
+/* ================= FOOTER ================= */
+
+.footer {
+    background-image:
+        linear-gradient(
+            rgba(0, 0, 0, 0.55),
+            rgba(0, 0, 0, 0.55)
+        ),
+        url("Assets/download.png");
+
+    background-size: cover;
+    background-position: center;
+    background-repeat: no-repeat;
+}
+
+.footer p {
+    margin: 0;
+    font-size: 14px;
+    color: white;
+    text-shadow: 1px 1px 3px black;
+}
+
+/* ================= RESPONSIVE ================= */
+
+@media (max-width: 768px) {
+    .garage-photos {
+        gap: 12px;
+        flex-wrap: nowrap;
+    }
+
+    .garage-photos img {
+        width: 110px;
+        height: 110px;
+        min-width: 0;
+        flex: 0 1 110px;
+    }
+}
+
+.garage-photos img:nth-child(2):hover {
+    transform: scale(1.13);
+}
+
+/* Pengaturan untuk mengurangi animasi */
+@media (prefers-reduced-motion: reduce) {
+    .home-video,
+    .home-content h1,
+    .home-content p,
+    .home-content .btn,
+    .progress-bar {
+        animation: none !important;
+    }
+
+    .btn,
+    .nav-link,
+    .service-card,
+    .service-photo,
+    .service-icon,
+    .garage-photos img,
+    .form-control,
+    .thankyou-modal,
+    .thankyou-close {
+        transition: none !important;
+    }
+}
+
+/* ===== MICROINTERACTION PULUNG GARAGE ===== */
+
+/* Transisi halus */
+html {
+    scroll-behavior: smooth;
+    scroll-padding-top: 85px;
+}
+
+.btn,
+.nav-link,
+.service-icon,
+.service-photo,
+.garage-photos img {
+    transition: all 0.3s ease;
+}
+
+/* Tombol interaktif */
+.btn {
+    position: relative;
+    overflow: hidden;
+    transition:
+        transform 0.25s ease,
+        box-shadow 0.25s ease,
+        background-color 0.25s ease;
+}
+
+.btn:hover {
+    transform: translateY(-3px);
+    box-shadow: 0 8px 20px rgba(0, 0, 0, 0.22);
+}
+
+.btn:active {
+    transform: scale(0.96);
+}
+
+/* Efek garis bawah navbar */
+.nav-link {
+    position: relative;
+    display: inline-block;
+}
+
+.nav-link::after {
+    content: "";
+    position: absolute;
+    left: 10px;
+    right: 100%;
+    bottom: 3px;
+    height: 2px;
+    background: #60a5fa;
+    transition: right 0.3s ease;
+}
+
+.nav-link:hover::after,
+.nav-link:focus-visible::after,
+.nav-link.active::after {
+    right: 0;
+}
+
+/* Kartu layanan */
+.service-card {
+    border-radius: 18px;
+    transition:
+        transform 0.35s ease,
+        background-color 0.35s ease,
+        box-shadow 0.35s ease;
+}
+
+.service-card:hover {
+    transform: translateY(-8px);
+    background-color: rgba(255, 255, 255, 0.055);
+    box-shadow: 0 15px 35px rgba(0, 0, 0, 0.2);
+}
+
+.service-photo {
+    transition:
+        transform 0.5s ease,
+        filter 0.5s ease;
+}
+
+.service-card:hover .service-photo {
+    transform: scale(1.035);
+    filter: brightness(1.08);
+}
+
+.service-icon {
+    transition:
+        transform 0.35s ease,
+        background-color 0.35s ease;
+}
+
+.service-card:hover .service-icon {
+    transform: rotate(-8deg) scale(1.1);
+    background-color: #1d5b83;
+}
+
+/* Galeri foto */
+.garage-photos img {
+    transition:
+        transform 0.4s ease,
+        box-shadow 0.4s ease;
+}
+
+.garage-photos img:hover {
+    transform: scale(1.08) rotate(2deg);
+    box-shadow: 0 12px 28px rgba(16, 50, 78, 0.25);
+}
+
+/* Input formulir */
+.form-control {
+    transition:
+        border-color 0.25s ease,
+        box-shadow 0.25s ease,
+        transform 0.25s ease;
+}
+
+.form-control:focus {
+    border-color: #60a5fa;
+    box-shadow: 0 0 0 4px rgba(96, 165, 250, 0.2);
+    transform: translateY(-1px);
+}
+
+/* Animasi saat scroll */
+.reveal {
+    opacity: 0;
+    transform: translateY(24px);
+    transition:
+        opacity 0.7s ease,
+        transform 0.7s ease;
+}
+
+.reveal.is-visible {
+    opacity: 1;
+    transform: translateY(0);
+}
+
+/* Animasi progress bar */
+.progress-bar {
+    width: 0 !important;
+    transition: width 1.4s cubic-bezier(.22, 1, .36, 1);
+}
+
+/* Notifikasi formulir */
+.micro-toast {
+    position: fixed;
+    right: 22px;
+    bottom: 22px;
+    z-index: 9999;
+    max-width: calc(100vw - 44px);
+    padding: 15px 20px;
+    color: #fff;
+    background: #10324e;
+    border-left: 4px solid #60a5fa;
+    border-radius: 10px;
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.25);
+    opacity: 0;
+    transform: translateY(20px);
+    pointer-events: none;
+    transition:
+        opacity 0.3s ease,
+        transform 0.3s ease;
+}
+
+.micro-toast.show {
+    opacity: 1;
+    transform: translateY(0);
+}
+
+/* Tombol kembali ke atas */
+.back-to-top {
+    position: fixed;
+    right: 22px;
+    bottom: 85px;
+    z-index: 1000;
+    width: 44px;
+    height: 44px;
+    border: 0;
+    border-radius: 50%;
+    color: white;
+    background: #1769aa;
+    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
+    opacity: 0;
+    visibility: hidden;
+    transform: translateY(10px);
+    transition: all 0.3s ease;
+}
+
+.back-to-top.show {
+    opacity: 1;
+    visibility: visible;
+    transform: translateY(0);
+}
+
+.back-to-top:hover {
+    background: #0d445b;
+    transform: translateY(-4px);
+}
+
+/* Hormati pengaturan pengurangan animasi */
+@media (prefers-reduced-motion: reduce) {
+    *,
+    *::before,
+    *::after {
+        scroll-behavior: auto !important;
+        animation-duration: 0.01ms !important;
+        animation-iteration-count: 1 !important;
+        transition-duration: 0.01ms !important;
+    }
+
+    .reveal {
+        opacity: 1;
+        transform: none;
+    }
+}
+
+/* ===== POP-UP TERIMA KASIH ===== */
+
+.thankyou-overlay {
+    position: fixed;
+    inset: 0;
+    z-index: 10000;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding: 20px;
+
+    background: rgba(2, 12, 24, 0.75);
+    backdrop-filter: blur(7px);
+    -webkit-backdrop-filter: blur(7px);
+
+    opacity: 0;
+    visibility: hidden;
+    transition:
+        opacity 0.35s ease,
+        visibility 0.35s ease;
+}
+
+.thankyou-overlay:target {
+    opacity: 1;
+    visibility: visible;
+    pointer-events: auto;
+}
+
+.thankyou-overlay:target .thankyou-modal {
+    transform: translateY(0) scale(1);
+}
+
+.thankyou-modal {
+    width: 100%;
+    max-width: 430px;
+    padding: 35px 28px;
+    text-align: center;
+    color: #ffffff;
+
+    background: linear-gradient(145deg, #10324e, #071827);
+    border: 1px solid rgba(96, 165, 250, 0.45);
+    border-radius: 22px;
+    box-shadow: 0 25px 80px rgba(0, 0, 0, 0.4);
+
+    transform: translateY(35px) scale(0.88);
+    transition: transform 0.4s cubic-bezier(.2, .8, .2, 1);
+}

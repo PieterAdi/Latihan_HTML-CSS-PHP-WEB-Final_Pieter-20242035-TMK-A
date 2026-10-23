@@ -1,3 +1,4 @@
+<?php include 'koneksi.php'; ?>
 <!DOCTYPE html>
 <html lang="id">
 
@@ -1227,61 +1228,28 @@
             </div>
 
             <div class="row g-4">
-
-                <!-- Service 1 -->
+                <?php
+                $queryServices = mysqli_query($koneksi, "SELECT * FROM services");
+                while ($row = mysqli_fetch_assoc($queryServices)) :
+                ?>
                 <div class="col-md-4">
                     <div class="service-card">
-                        <div class="service-icon">🔧</div>
-                        <h3>Service Rutin</h3>
+                        <div class="service-icon">
+                            <?= $row['ikon']; ?>
+                        </div>
+                        <h3>
+                            <?= htmlspecialchars($row['judul']); ?>
+                        </h3>
 
-                        <img class="service-photo"
-                            src="https://i.ibb.co.com/0yybKFhg/Whats-App-Image-2026-10-02-at-10-12-04.jpg"
-                            alt="Service Rutin">
+                        <img class="service-photo" src="<?= $row['foto']; ?>"
+                            alt="<?= htmlspecialchars($row['judul']); ?>">
 
                         <p>
-                            Pemeriksaan rutin meliputi pengecekan oli mesin, rem, ban, aki,
-                            dan komponen kendaraan lainnya untuk menjaga keamanan serta performa kendaraan tetap
-                            optimal.
+                            <?= htmlspecialchars($row['deskripsi']); ?>
                         </p>
                     </div>
                 </div>
-
-                <!-- Service 2 -->
-                <div class="col-md-4">
-                    <div class="service-card">
-                        <div class="service-icon">⚙️</div>
-                        <h3>Perbaikan Mesin</h3>
-
-                        <img class="service-photo"
-                            src="https://i.ibb.co.com/CpVjL7Lq/Whats-App-Image-2026-10-02-at-10-12-04-1.jpg"
-                            alt="Perbaikan Mesin">
-
-                        <p>
-                            Menangani berbagai kerusakan mesin, mulai dari mesin sulit dihidupkan,
-                            suara tidak normal, hingga perbaikan komponen mesin agar kendaraan kembali bekerja dengan
-                            baik.
-                        </p>
-                    </div>
-                </div>
-
-                <!-- Service 3 -->
-                <div class="col-md-4">
-                    <div class="service-card">
-                        <div class="service-icon">⚡</div>
-                        <h3>Kelistrikan AC &amp; DC</h3>
-
-                        <img class="service-photo"
-                            src="https://i.ibb.co/w3kzcSB/Whats-App-Image-2026-10-20-at-14-29-47.jpg"
-                            alt="Kelistrikan AC DC">
-
-                        <p>
-                            Pemeriksaan dan perbaikan sistem kelistrikan kendaraan, termasuk aki, kabel, sekring, lampu,
-                            starter,
-                            dan sistem pengisian untuk memastikan semua komponen listrik berfungsi dengan baik.
-                        </p>
-                    </div>
-                </div>
-
+                <?php endwhile; ?>
             </div>
         </div>
     </section>
@@ -1383,7 +1351,7 @@
                     <div class="stat-card reveal">
                         <span class="stat-icon">⭐</span>
                         <p>Kepuasan Pelanggan</p>
-                        <h3><span class="counter" data-target="96">0</span>%</h3>
+                        <h3><span class="counter" data-target="95">0</span>%</h3>
                         <small>Simulasi, bukan hasil survei</small>
                     </div>
                 </div>
@@ -1536,7 +1504,7 @@
                             observer.unobserve(entry.target);
                         }
                     });
-                }, { threshold: 0.15 });
+                }, {threshold: 0.15});
 
                 revealElements.forEach(function (element) {
                     observer.observe(element);
@@ -1614,13 +1582,13 @@
 
                         scales: {
                             x: {
-                                ticks: { color: "#c2d7e8" },
-                                grid: { display: false }
+                                ticks: {color: "#c2d7e8"},
+                                grid: {display: false}
                             },
 
                             y: {
                                 beginAtZero: true,
-                                ticks: { color: "#c2d7e8" },
+                                ticks: {color: "#c2d7e8"},
                                 grid: {
                                     color: "rgba(255, 255, 255, 0.1)"
                                 }

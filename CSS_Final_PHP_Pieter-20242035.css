@@ -1,0 +1,353 @@
+html {
+    scroll-behavior: smooth;
+}
+
+body {
+    margin: 0;
+    font-family: Arial, sans-serif;
+}
+
+/* ===== GARAGE INSIGHTS ===== */
+
+.insights-section {
+    background: #081b2b;
+    color: #fff;
+}
+
+.insights-label {
+    display: inline-block;
+    padding: 7px 16px;
+    border: 1px solid #4387bd;
+    border-radius: 30px;
+    color: #8dcaff;
+    font-size: 12px;
+    letter-spacing: 2px;
+}
+
+.insights-description,
+.chart-subtitle {
+    color: #a9bdce;
+}
+
+.stat-card,
+.chart-card {
+    background: #10324e;
+    border: 1px solid rgba(141, 202, 255, .18);
+    border-radius: 16px;
+    padding: 24px;
+    height: 100%;
+    transition: transform .3s ease, box-shadow .3s ease;
+}
+
+.stat-card:hover,
+.chart-card:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 12px 30px rgba(0, 0, 0, .2);
+}
+
+.stat-icon {
+    font-size: 28px;
+}
+
+.stat-card p {
+    margin: 14px 0 5px;
+    color: #c2d7e8;
+}
+
+.stat-card h3 {
+    color: #8dcaff;
+    font-size: 32px;
+    font-weight: 700;
+}
+
+.stat-card small {
+    color: #a9bdce;
+}
+
+.chart-container {
+    position: relative;
+    width: 100%;
+    height: 320px;
+}
+
+.chart-btn {
+    border: 1px solid #5186ad;
+    border-radius: 8px;
+    padding: 8px 15px;
+    background: transparent;
+    color: white;
+    transition: .25s ease;
+}
+
+.chart-btn:hover {
+    background: #245a7e;
+    transform: translateY(-2px);
+}
+
+.chart-btn.active {
+    background: #3b8dc5;
+    border-color: #3b8dc5;
+}
+
+/* Animasi ketika elemen muncul */
+.reveal {
+    opacity: 0;
+    transform: translateY(24px);
+    transition: opacity .7s ease, transform .7s ease;
+}
+
+.reveal.is-visible {
+    opacity: 1;
+    transform: translateY(0);
+}
+
+/* Pengaturan pengurangan animasi */
+@media (prefers-reduced-motion: reduce) {
+    .reveal,
+    .stat-card,
+    .chart-card,
+    .chart-btn {
+        transition: none;
+    }
+
+    .reveal {
+        opacity: 1;
+        transform: none;
+    }
+}
+
+@media (max-width: 576px) {
+    .stat-card {
+        padding: 18px;
+    }
+
+    .chart-container {
+        height: 260px;
+    }
+
+    .chart-card {
+        padding: 16px;
+    }
+}
+
+/* ================= NAVBAR ================= */
+
+.navbar {
+    background-image:
+        linear-gradient(
+            rgba(5, 20, 35, 0.65),
+            rgba(5, 20, 35, 0.65)
+        ),
+        url("Assets/download.png");
+
+    background-size: cover;
+    background-position: center;
+    background-repeat: no-repeat;
+
+    border-bottom: 1px solid #376edd;
+    min-height: 70px;
+}
+
+.logo {
+    width: 60px;
+    height: 60px;
+    border: 1px solid #333;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 10px;
+    font-weight: bold;
+    color: white;
+    background-color: rgb(24, 24, 25);
+    text-decoration: none;
+}
+
+.nav-link {
+    color: #ffffff !important;
+    font-size: 14px;
+    margin-left: 10px;
+}
+
+.nav-link:hover {
+    color: #a3cbf0 !important;
+}
+
+/* ================= HOME ================= */
+
+.home-section {
+    position: relative;
+    overflow: hidden;
+    min-height: 400px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+    padding: 40px 0;
+}
+
+.home-video {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    object-position: center;
+    z-index: 0;
+}
+
+.home-overlay {
+    position: absolute;
+    inset: 0;
+    background: rgba(0, 0, 0, 0.45);
+    z-index: 1;
+    pointer-events: none;
+}
+
+.home-content {
+    position: relative;
+    z-index: 2;
+    color: white;
+}
+
+.home-content h1 {
+    font-size: 42px;
+    font-weight: bold;
+}
+
+.home-content p {
+    font-size: 17px;
+    margin-bottom: 25px;
+}
+
+/* ================= SECTION BUTTON ================= */
+
+.section-button {
+    display: inline-block;
+    background-color: rgb(85, 94, 105);
+    color: #ffffff;
+    border: 1px solid #777;
+    border-radius: 7px;
+    padding: 8px 24px;
+    font-weight: 500;
+}
+
+/* ================= SERVICES ================= */
+
+.services-section {
+    color: white;
+    background-color: #10324e;
+    padding: 40px 0 50px;
+}
+
+.service-card {
+    height: 100%;
+    padding: 20px;
+    background-color: transparent;
+    color: #ffffff;
+    text-align: center;
+}
+
+.service-photo {
+    display: block;
+    width: calc(100% - 20px);
+    margin: 0 auto 15px;
+    border-radius: 10px;
+}
+
+.service-icon {
+    width: 65px;
+    height: 65px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    background-color: #10324e;
+    border: 2px solid #ffffff;
+    border-radius: 50%;
+
+    margin: 0 auto 15px;
+    font-size: 32px;
+    color: #ffffff;
+}
+
+.service-card h3 {
+    font-size: 22px;
+    font-weight: bold;
+}
+
+.service-card p {
+    font-size: 14px;
+    line-height: 1.5;
+}
+
+/* ================= ABOUT ================= */
+
+.about-section {
+    color: white;
+    background-color: #10324e;
+    padding: 40px 0;
+}
+
+.about-section form {
+    max-width: 800px;
+    margin: auto;
+}
+
+.form-control {
+    border: 1px solid #9cabcf;
+    border-radius: 5px;
+}
+
+textarea.form-control {
+    resize: none;
+}
+
+.about-section .btn {
+    display: inline-block;
+    min-width: 180px;
+    padding: 14px 30px;
+    color: #ffffff;
+    background: linear-gradient(135deg, #1769a6, #123b59);
+    border: 1px solid #4a90c2;
+    border-radius: 50px;
+    font-size: 20px;
+    letter-spacing: 2px;
+    text-align: center;
+    text-decoration: none;
+    text-transform: uppercase;
+    box-sizing: border-box;
+}
+
+.about-section .btn:hover {
+    color: #ffffff;
+    background: linear-gradient(135deg, #2585c9, #16496d);
+    box-shadow: 0 0 15px rgba(74, 144, 194, 0.5);
+}
+
+.garage-photos {
+    display: flex;
+    justify-content: space-around;
+    align-items: center;
+    gap: 40px;
+    flex-wrap: wrap;
+}
+
+.garage-photos img {
+    width: 210px;
+    height: 210px;
+    border-radius: 50%;
+    object-fit: cover;
+}
+
+/* ================= PROGRESS ================= */
+
+.progress {
+    height: 25px;
+    border-radius: 10px;
+}
+
+.progress-bar {
+    background-color: #0d445b;
+}
